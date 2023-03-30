@@ -47,7 +47,7 @@ CREATE TABLE `matches` (
 
 
 --
--- Insert values for table `matches`
+-- Insert values for table `matches` 
 --
 
 INSERT INTO `matches` VALUES
