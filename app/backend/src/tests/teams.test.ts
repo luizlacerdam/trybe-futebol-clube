@@ -12,7 +12,18 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('1. Testa a rota /teams;', () => {
+  // describe('1.1. Error na requisição;', () => {
+  //   it('GET /teams', async () => {
+  //     const httpRes = await chai.request(app).get('/teams');
+  //   });
+
+  // });
+
+  describe('1.1. Sucesso na requisição.', () => {
+
+  });
+
   /**
    * Exemplo do uso de stubs com tipos
    */
@@ -39,7 +50,4 @@ describe('Seu teste', () => {
   //   expect(...)
   // });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
 });
