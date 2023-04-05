@@ -3,6 +3,6 @@ export interface ITeam {
   teamName: string;
 }
 
-export interface ITeams {
+export interface ITeamsService {
   getAll(): Promise<ITeam[]>
 }
