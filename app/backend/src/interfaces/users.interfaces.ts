@@ -1,11 +1,16 @@
-export interface IUser {
-  id: number;
-  username: string;
-  role: string;
+import Users from '../database/models/users.model';
+
+export interface IUserLogin {
   email: string;
   password: string;
 }
 
+export interface IUser extends IUserLogin {
+  id: number;
+  username: string;
+  role: string;
+}
+
 export interface IUsersService {
-  getAll(): Promise<IUser[]>
+  userLogin(loginObj: IUserLogin): Promise<Users | null>
 }
