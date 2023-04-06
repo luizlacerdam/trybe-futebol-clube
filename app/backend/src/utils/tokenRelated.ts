@@ -10,4 +10,6 @@ const config: jwt.SignOptions = {
 
 const tokenGen = (payload: IUser) => jwt.sign(payload, tokenSecret, config);
 
-export default tokenGen;
+const tokenValidation = (token: string) => jwt.verify(token, tokenSecret);
+
+export { tokenGen, tokenValidation };
