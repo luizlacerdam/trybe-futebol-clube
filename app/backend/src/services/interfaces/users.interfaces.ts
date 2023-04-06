@@ -1,4 +1,5 @@
-import Users from '../../database/models/users.model';
+// import Users from '../../database/models/users.model';
+import { IService } from './service.interfaces';
 
 export interface IUserLogin {
   email: string;
@@ -12,5 +13,5 @@ export interface IUser extends IUserLogin {
 }
 
 export interface IUsersService {
-  userLogin(loginObj: IUserLogin): Promise<Users | null>
+  userLogin(loginObj: IUserLogin): Promise<IService<string>>
 }
