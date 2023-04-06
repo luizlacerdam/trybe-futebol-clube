@@ -6,6 +6,7 @@ export default class UsersController {
   public userLogin = async (req: Request, res: Response) => {
     const loginObj = req.body;
     const { status, data } = await this._usersService.userLogin(loginObj);
-    return res.status(status).json({ token: data });
+    // if (status) return res.status(status).json({ message: data });
+    return res.status(status).json(data);
   };
 }

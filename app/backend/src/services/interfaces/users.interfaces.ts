@@ -13,5 +13,5 @@ export interface IUser extends IUserLogin {
 }
 
 export interface IUsersService {
-  userLogin(loginObj: IUserLogin): Promise<IService<string>>
+  userLogin(loginObj: IUserLogin): Promise<IService<string | object>>
 }
