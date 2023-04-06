@@ -1,7 +1,7 @@
 import { ModelStatic } from 'sequelize';
 import tokenGen from '../utils/tokenGen';
 import Users from '../database/models/users.model';
-import { IUserLogin, IUsersService } from '../interfaces/users.interfaces';
+import { IUserLogin, IUsersService } from './interfaces/users.interfaces';
 
 export default class UsersService implements IUsersService {
   protected model: ModelStatic<Users> = Users;

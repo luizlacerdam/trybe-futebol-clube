@@ -1,4 +1,4 @@
-import Users from '../database/models/users.model';
+import Users from '../../database/models/users.model';
 
 export interface IUserLogin {
   email: string;

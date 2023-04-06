@@ -1,5 +1,5 @@
 import jwt, { Secret, SignOptions } from 'jsonwebtoken';
-import { IUser } from '../interfaces/userInterface';
+import { IUser } from '../services/interfaces/userInterface';
 
 const tokenSecret:Secret = process.env.JWT_SECRET || 'secret';
 
