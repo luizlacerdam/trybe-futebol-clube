@@ -11,7 +11,6 @@ const loginValidation = (req: Request, res: Response, next: NextFunction) => {
 const emailValidation = (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   const regex = /^\S+@\S+\.\S+$/;
-
   if (!email.match(regex) || !email) {
     return res.status(401).json({
       message: 'Invalid email or password',
@@ -19,4 +18,14 @@ const emailValidation = (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
-export { loginValidation, emailValidation };
+
+const passwordValidation = (req: Request, res: Response, next: NextFunction) => {
+  const { password } = req.body;
+  if (password.length < 6 || !password) {
+    return res.status(401).json({
+      message: 'Invalid email or password',
+    });
+  }
+  next();
+};
+export { loginValidation, emailValidation, passwordValidation };
