@@ -3,6 +3,7 @@ import { loginValidation,
   emailValidation,
   passwordValidation } from '../middlewares/loginValidation';
 import UsersController from '../controllers/users.controller';
+import tokenValidation from '../middlewares/tokenValidation';
 
 const router = Router();
 const userController = new UsersController();
@@ -16,6 +17,7 @@ router.post(
 );
 router.get(
   '/role',
+  tokenValidation,
   userController.userRole,
 );
 
