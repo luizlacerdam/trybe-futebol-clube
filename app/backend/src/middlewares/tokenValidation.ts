@@ -9,8 +9,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   }
   try {
     const decoded = tokenValidation(token);
-    console.log(decoded);
-
+    // const user = await UserService.getById(decoded.data.userId);
+    req.body.user = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Token must be a valid token' });

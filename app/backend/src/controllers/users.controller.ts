@@ -9,4 +9,12 @@ export default class UsersController {
     // if (status) return res.status(status).json({ message: data });
     return res.status(status).json(data);
   };
+
+  public userRole = async (req: Request, res: Response) => {
+    const { authorization } = req.headers;
+    const { user } = req.body;
+    if (authorization) {
+      return res.status(200).json({ role: user.role });
+    }
+  };
 }

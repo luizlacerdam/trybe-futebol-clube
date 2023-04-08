@@ -14,4 +14,9 @@ router.post(
   passwordValidation,
   userController.userLogin,
 );
+router.get(
+  '/role',
+  userController.userRole,
+);
+
 export default router;
