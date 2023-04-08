@@ -9,13 +9,22 @@ import { IService } from './interfaces/service.interfaces';
 export default class UsersService implements IUsersService {
   protected model: ModelStatic<Users> = Users;
 
+  // function checkPassword(loginPassword: string, dbPassword: string): {
+  //   const check = bcryptjs.compareSync(loginPassword, dbPassword);
+  //   return check;
+  // }
+
   async userLogin(loginObj: IUserLogin): Promise <IService<string | object>> {
     const user = await this.model.findOne({ where: { email: loginObj.email } });
+
     if (!user) return { status: 401, data: { message: 'Invalid email or password' } };
-    const checkPassword = bcryptjs.compareSync(loginObj.password, user.password);
-    if (!checkPassword) return { status: 401, data: { message: 'Invalid email or password' } };
+    // this.checkPassword(loginObj.password, user.password);
+    const isPasswordRight = bcryptjs.compareSync(loginObj.password, user.password);
+
+    if (!isPasswordRight) return { status: 401, data: { message: 'Invalid email or password' } };
     // delete user.password;
-    const token = tokenGen({ ...user });
+    const { password, ...userWithoutPass } = user.dataValues;
+    const token = tokenGen(userWithoutPass);
     return { status: 200, data: { token } };
   }
 }
