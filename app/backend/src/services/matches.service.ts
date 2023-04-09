@@ -21,8 +21,8 @@ export default class MatchesService implements IMatchService {
     const data = await this.model.findAll({
       where: { inProgress },
       include: [
-        { model: Teams, as: 'homeTeam', attributes: { exclude: ['id'] } },
         { model: Teams, as: 'awayTeam', attributes: { exclude: ['id'] } },
+        { model: Teams, as: 'homeTeam', attributes: { exclude: ['id'] } },
       ],
     });
     return { status: 200, data };
