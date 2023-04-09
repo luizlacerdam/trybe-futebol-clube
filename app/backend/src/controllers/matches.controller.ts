@@ -9,6 +9,16 @@ export default class MatchesController {
     return res.status(status).json(data);
   };
 
+  public findAllMaches = async (req: Request, res: Response) => {
+    const { inProgress } = req.query;
+    if (inProgress === undefined) {
+      const { status, data } = await this._matchesService.getAll();
+      return res.status(status).json(data);
+    }
+    const { status, data } = await this._matchesService.getInProgress(inProgress === 'true');
+    return res.status(status).json(data);
+  };
+
 //   public getById = async (req: Request, res: Response) => {
 //     const { id } = req.params;
 //     const { status, data } = await this._matchesService.getById(Number(id));
