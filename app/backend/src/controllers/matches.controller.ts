@@ -4,12 +4,12 @@ import MatchesService from '../services/matches.service';
 export default class MatchesController {
   constructor(private _matchesService = new MatchesService()) {}
 
-  public getAll = async (req: Request, res: Response) => {
-    const { status, data } = await this._matchesService.getAll();
-    return res.status(status).json(data);
-  };
+  //   public getAll = async (req: Request, res: Response) => {
+  //     const { status, data } = await this._matchesService.getAll();
+  //     return res.status(status).json(data);
+  //   };
 
-  public getInProgress = async (req: Request, res: Response) => {
+  public getMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
     if (inProgress === undefined) {
       const { status, data } = await this._matchesService.getAll();
