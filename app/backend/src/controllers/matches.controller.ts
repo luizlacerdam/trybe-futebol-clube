@@ -9,7 +9,7 @@ export default class MatchesController {
     return res.status(status).json(data);
   };
 
-  public findAllMaches = async (req: Request, res: Response) => {
+  public getInProgress = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
     if (inProgress === undefined) {
       const { status, data } = await this._matchesService.getAll();
