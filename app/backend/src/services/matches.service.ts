@@ -16,4 +16,15 @@ export default class MatchesService implements IMatchService {
     });
     return { status: 200, data };
   }
+
+  async getInProgress(inProgress: boolean): Promise<IService<Matches[]>> {
+    const data = await this.model.findAll({
+      where: { inProgress },
+      include: [
+        { model: Teams, as: 'homeTeam', attributes: { exclude: ['id'] } },
+        { model: Teams, as: 'awayTeam', attributes: { exclude: ['id'] } },
+      ],
+    });
+    return { status: 200, data };
+  }
 }
