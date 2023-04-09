@@ -17,6 +17,16 @@ export default class MatchesService implements IMatchService {
     return { status: 200, data };
   }
 
+  async getById(id: number): Promise<IService<Matches | null>> {
+    const data = await this.model.findByPk(id, {
+      include: [
+        { model: Teams, as: 'awayTeam', attributes: ['teamName'] },
+        { model: Teams, as: 'homeTeam', attributes: ['teamName'] },
+      ],
+    });
+    return { status: 200, data };
+  }
+
   async getInProgress(inProgress: boolean): Promise<IService<Matches[]>> {
     const data = await this.model.findAll({
       where: { inProgress },
