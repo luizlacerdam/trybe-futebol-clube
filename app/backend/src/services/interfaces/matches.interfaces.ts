@@ -24,3 +24,10 @@ export interface MatcheObj {
   homeTeamGoals: number;
   awayTeamGoals: number;
 }
+
+export interface NewMatchObj {
+  homeTeamId: number;
+  awayTeamId: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
