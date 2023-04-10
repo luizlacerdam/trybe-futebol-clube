@@ -16,4 +16,5 @@ export interface IMatchService {
   getAll(): Promise<IService<Matches[]>>;
   getById(id: number): Promise<IService<Matches | null>>;
   getInProgress(inProgress: boolean): Promise<IService<Matches[]>>;
+  finishMatch(id: number): Promise<IService<number[]>>;
 }
