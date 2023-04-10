@@ -64,11 +64,16 @@ export default class MatchesService implements IMatchService {
   async newMatch(matcheObj: NewMatchObj): Promise<IService<NewMatchObjReturn | object>> {
     const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = matcheObj;
 
-    const checkHomeTeam = await this.model.findOne({ where: { homeTeamId } });
+    const homeTeam = await this.model.findOne({ where: { homeTeamId } });
 
-    const checkAwayTeam = await this.model.findOne({ where: { awayTeamId } });
+    const awayTeam = await this.model.findOne({ where: { awayTeamId } });
 
-    if (!checkAwayTeam || !checkHomeTeam) {
+    if (matcheObj.homeTeamId === matcheObj.awayTeamId) {
+      return { status: 422,
+        data: { message: 'It is not possible to create a match with two equal teams' } };
+    }
+
+    if (!homeTeam || !awayTeam) {
       return { status: 404, data: { message: 'There is no team with such id!' } };
     }
 
@@ -76,6 +81,6 @@ export default class MatchesService implements IMatchService {
       homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true,
     });
 
-    return { status: 200, data };
+    return { status: 201, data };
   }
 }
