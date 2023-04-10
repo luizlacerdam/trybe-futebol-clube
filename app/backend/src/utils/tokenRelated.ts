@@ -8,7 +8,7 @@ const config: jwt.SignOptions = {
   algorithm: 'HS256',
 };
 
-const tokenGen = (payload: IUser) => jwt.sign(payload, tokenSecret, config);
+const tokenGen = (payload: Omit<IUser, 'password'>) => jwt.sign(payload, tokenSecret, config);
 
 const tokenValidation = (token: string) => jwt.verify(token, tokenSecret);
 
