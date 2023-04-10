@@ -35,7 +35,7 @@ export default class MatchesController {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
     const { status, data } = await this._matchesService.matchUpdate(
-      { id, homeTeamGoals, awayTeamGoals },
+      { id: +id, homeTeamGoals, awayTeamGoals },
     );
     return res.status(status).json(data);
   };

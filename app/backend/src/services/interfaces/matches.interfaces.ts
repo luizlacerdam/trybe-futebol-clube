@@ -18,3 +18,9 @@ export interface IMatchService {
   getInProgress(inProgress: boolean): Promise<IService<Matches[]>>;
   finishMatch(id: number): Promise<IService<object>>;
 }
+
+export interface MatcheObj {
+  id: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}

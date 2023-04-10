@@ -2,7 +2,7 @@ import { ModelStatic } from 'sequelize';
 import Teams from '../database/models/teams.model';
 import Matches from '../database/models/matches.model';
 import { IService } from './interfaces/service.interfaces';
-import { IMatchService } from './interfaces/matches.interfaces';
+import { IMatchService, MatcheObj } from './interfaces/matches.interfaces';
 
 export default class MatchesService implements IMatchService {
   protected model: ModelStatic<Matches> = Matches;
@@ -47,7 +47,7 @@ export default class MatchesService implements IMatchService {
     return { status: 200, data };
   }
 
-  async matchUpdate(matcheObj: object): Promise<IService<null>> {
+  async matchUpdate(matcheObj: MatcheObj): Promise<IService<null>> {
     const { id, homeTeamGoals, awayTeamGoals } = matcheObj;
 
     await this.model.update(
