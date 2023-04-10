@@ -31,3 +31,8 @@ export interface NewMatchObj {
   homeTeamGoals: number;
   awayTeamGoals: number;
 }
+
+export interface NewMatchObjReturn extends NewMatchObj {
+  id: number;
+  inProgress: boolean;
+}

@@ -2,7 +2,11 @@ import { ModelStatic } from 'sequelize';
 import Teams from '../database/models/teams.model';
 import Matches from '../database/models/matches.model';
 import { IService } from './interfaces/service.interfaces';
-import { IMatchService, MatcheObj } from './interfaces/matches.interfaces';
+import {
+  IMatchService,
+  MatcheObj,
+  NewMatchObj,
+  NewMatchObjReturn } from './interfaces/matches.interfaces';
 
 export default class MatchesService implements IMatchService {
   protected model: ModelStatic<Matches> = Matches;
@@ -55,5 +59,23 @@ export default class MatchesService implements IMatchService {
       { where: { id } },
     );
     return { status: 200, data: null };
+  }
+
+  async newMatch(matcheObj: NewMatchObj): Promise<IService<NewMatchObjReturn | object>> {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = matcheObj;
+
+    const checkHomeTeam = await this.model.findOne({ where: { homeTeamId } });
+
+    const checkAwayTeam = await this.model.findOne({ where: { awayTeamId } });
+
+    if (!checkAwayTeam || !checkHomeTeam) {
+      return { status: 404, data: { message: 'There is no team with such id!' } };
+    }
+
+    const data = await this.model.create({
+      homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true,
+    });
+
+    return { status: 200, data };
   }
 }
