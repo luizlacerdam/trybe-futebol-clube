@@ -46,4 +46,14 @@ export default class MatchesService implements IMatchService {
     const data = { message: 'Finished' };
     return { status: 200, data };
   }
+
+  async matchUpdate(matcheObj: object): Promise<IService<null>> {
+    const { id, homeTeamGoals, awayTeamGoals } = matcheObj;
+
+    await this.model.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+    return { status: 200, data: null };
+  }
 }
