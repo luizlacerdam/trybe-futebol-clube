@@ -39,4 +39,10 @@ export default class MatchesController {
     );
     return res.status(status).json(data);
   };
+
+  public newMatch = async (req: Request, res: Response) => {
+    const NewMatchObj = req.body;
+    const { status, data } = await this._matchesService.newMatch(NewMatchObj);
+    return res.status(status).json(data);
+  };
 }
