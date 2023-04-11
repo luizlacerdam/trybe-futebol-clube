@@ -5,10 +5,7 @@ export default class LeadboardService {
   protected model: ModelStatic<Matches> = Matches;
 
   public async getTeamsPerfomance() {
-    const data = await this.model.findAll({
-      where: { inProgress: false },
-      include: [{ model: Matches, as: 'homeTeam', attributes: { exclude: ['id'] } }],
-    });
+    const data = await this.model.findAll();
     return { status: 200, data };
   }
 }
