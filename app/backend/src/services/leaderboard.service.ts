@@ -4,7 +4,7 @@ import Matches from '../database/models/matches.model';
 export default class LeadboardService {
   protected model: ModelStatic<Matches> = Matches;
 
-  public async teamsPerformaceHome() {
+  public async getTeamsPerfomance() {
     const data = await this.model.findAll({
       where: { inProgress: false },
       include: [{ model: Matches, as: 'homeTeam', attributes: { exclude: ['id'] } }],
