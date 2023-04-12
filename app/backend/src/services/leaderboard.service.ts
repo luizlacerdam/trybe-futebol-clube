@@ -22,7 +22,7 @@ export default class LeadboardService {
     return teamObj;
   }
 
-  static homeTeamCounter(team: ITeam, matchesArr: IMatch[], data: ILeader[]) {
+  static homeTeamCounter(team: ITeam, matchesArr: IMatch[]) {
     const teamObj = LeadboardService.teamObjFunc() as ILeader;
     teamObj.name = team.teamName;
     matchesArr.forEach((match: IMatch) => {
@@ -48,7 +48,7 @@ export default class LeadboardService {
     return `${efficiency.toFixed(2)}`;
   }
 
-  static sortArr = (arr: ILeader[]) => arr.sort((b, a) => {
+  static ArrSorting = (arr: ILeader[]) => arr.sort((b, a) => {
     if (a.totalPoints === b.totalPoints) {
       if (a.goalsBalance === b.goalsBalance) {
         return a.goalsFavor - b.goalsFavor;
@@ -83,11 +83,11 @@ export default class LeadboardService {
     const matchesArr = await this.model.findAll({ where: { inProgress: false } });
     const dataArr: ILeader[] = [];
     teamsArr.forEach((team) => {
-      const teamObj = LeadboardService.homeTeamCounter(team, matchesArr, dataArr);
+      const teamObj = LeadboardService.homeTeamCounter(team, matchesArr);
       teamObj.efficiency = LeadboardService.teamEfficiency(teamObj.totalPoints, teamObj.totalGames);
       dataArr.push(teamObj);
     });
-    const data = LeadboardService.sortArr(dataArr);
+    const data = LeadboardService.ArrSorting(dataArr);
     return { status: 200, data };
   }
 }
