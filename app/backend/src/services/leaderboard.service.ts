@@ -2,6 +2,8 @@ import { ModelStatic } from 'sequelize';
 import Matches from '../database/models/matches.model';
 import Teams from '../database/models/teams.model';
 import ILeader from './interfaces/leaderboard.interfaces';
+import { ITeam } from './interfaces/teams.interfaces';
+import { IMatch } from './interfaces/matches.interfaces';
 
 export default class LeadboardService {
   protected model: ModelStatic<Matches> = Matches;
@@ -20,10 +22,10 @@ export default class LeadboardService {
     return teamObj;
   }
 
-  static homeTeamCounter(team: any, matchesArr: any, data: ILeader[]) {
+  static homeTeamCounter(team: ITeam, matchesArr: IMatch[], data: ILeader[]) {
     const teamObj = LeadboardService.teamObjFunc() as ILeader;
     teamObj.name = team.teamName;
-    matchesArr.forEach((match: any) => {
+    matchesArr.forEach((match: IMatch) => {
       if (team.id === match.homeTeamId) {
         teamObj.totalGames += 1; teamObj.goalsFavor += match.homeTeamGoals;
         teamObj.goalsOwn += match.awayTeamGoals;
@@ -46,12 +48,6 @@ export default class LeadboardService {
     const data: ILeader[] = [];
     teamsArr.forEach((team) => {
       LeadboardService.homeTeamCounter(team, matchesArr, data);
-      //   const teamObj = LeadboardService.teamObjFunc() as ILeader;
-      //   teamObj.name = team.teamName;
-      //   matchesArr.forEach((match) => {
-      //     LeadboardService.homeTeamCounter(team, match, teamObj);
-      //   });
-    //   data.push(teamObj);
     });
     return { status: 200, data };
   }
