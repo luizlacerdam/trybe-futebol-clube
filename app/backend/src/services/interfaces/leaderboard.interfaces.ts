@@ -7,4 +7,6 @@ export default interface ILeader {
   totalLosses: number;
   goalsFavor: number;
   goalsOwn: number;
+  goalsBalance: number;
+  efficiency: string;
 }

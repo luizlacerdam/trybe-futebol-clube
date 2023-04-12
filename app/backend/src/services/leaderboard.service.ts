@@ -27,11 +27,12 @@ export default class LeadboardService {
     teamObj.name = team.teamName;
     matchesArr.forEach((match: IMatch) => {
       if (team.id === match.homeTeamId) {
-        teamObj.totalGames += 1; teamObj.goalsFavor += match.homeTeamGoals;
+        teamObj.totalGames += 1;
+        teamObj.goalsFavor += match.homeTeamGoals;
         teamObj.goalsOwn += match.awayTeamGoals;
+        teamObj.goalsBalance = teamObj.goalsFavor - teamObj.goalsOwn;
         if (match.homeTeamGoals > match.awayTeamGoals) {
-          teamObj.totalVictories += 1;
-          teamObj.totalPoints += 3;
+          teamObj.totalVictories += 1; teamObj.totalPoints += 3;
         } else if (match.homeTeamGoals < match.awayTeamGoals) {
           teamObj.totalLosses += 1;
         } else {
@@ -39,15 +40,43 @@ export default class LeadboardService {
         }
       }
     });
-    data.push(teamObj);
+    return teamObj;
   }
+
+  static teamEfficiency(points: number, matches: number) {
+    const efficiency = ((points / (matches * 3)) * 100);
+    return `${efficiency.toFixed(2)}`;
+  }
+
+  //   static awayTeamCounter(team: ITeam, matchesArr: IMatch[], data: ILeader[]) {
+  //     const teamObj = LeadboardService.teamObjFunc() as ILeader;
+  //     teamObj.name = team.teamName;
+  //     matchesArr.forEach((match: IMatch) => {
+  //       if (team.id === match.awayTeamId) {
+  //         teamObj.totalGames += 1;
+  //         teamObj.goalsFavor += match.awayTeamGoals;
+  //         teamObj.goalsOwn += match.homeTeamGoals;
+  //         if (match.awayTeamGoals > match.homeTeamGoals) {
+  //           teamObj.totalVictories += 1;
+  //           teamObj.totalPoints += 3;
+  //         } else if (match.awayTeamGoals < match.homeTeamGoals) {
+  //           teamObj.totalLosses += 1;
+  //         } else {
+  //           teamObj.totalDraws += 1; teamObj.totalPoints += 1;
+  //         }
+  //       }
+  //     });
+  //     data.push(teamObj);
+  //   }
 
   public async getTeamsPerfomance() {
     const teamsArr = await Teams.findAll();
     const matchesArr = await this.model.findAll({ where: { inProgress: false } });
     const data: ILeader[] = [];
     teamsArr.forEach((team) => {
-      LeadboardService.homeTeamCounter(team, matchesArr, data);
+      const teamObj = LeadboardService.homeTeamCounter(team, matchesArr, data);
+      teamObj.efficiency = LeadboardService.teamEfficiency(teamObj.totalPoints, teamObj.totalGames);
+      data.push(teamObj);
     });
     return { status: 200, data };
   }
