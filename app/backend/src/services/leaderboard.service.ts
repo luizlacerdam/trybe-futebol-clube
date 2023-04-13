@@ -103,4 +103,36 @@ export default class LeadboardService {
     const data = LeadboardService.ArrSorting(dataArr);
     return { status: 200, data };
   }
+
+  public async getTeamsPerfomanceGeral() {
+    const teamsArr = await Teams.findAll();
+    const matchesArr = await this.model.findAll({ where: { inProgress: false } });
+    const dataArr: ILeader[] = [];
+    teamsArr.forEach((team) => {
+      const teamObj = LeadboardService.geralTeamCounter(team, matchesArr);
+      teamObj.efficiency = LeadboardService.teamEfficiency(teamObj.totalPoints, teamObj.totalGames);
+      dataArr.push(teamObj);
+    });
+    const data = LeadboardService.ArrSorting(dataArr);
+    return { status: 200, data };
+  }
+
+  static geralTeamCounter(team: ITeam, matchesArr: IMatch[]) {
+    const teamObjHome = LeadboardService.homeTeamCounter(team, matchesArr);
+    const teamObjAway = LeadboardService.awayTeamCounter(team, matchesArr);
+    const teamObj = LeadboardService.teamObjFunc() as ILeader;
+
+    teamObj.name = team.teamName;
+    teamObj.totalPoints = teamObjHome.totalPoints + teamObjAway.totalPoints;
+    teamObj.totalGames = teamObjHome.totalGames + teamObjAway.totalGames;
+    teamObj.totalVictories = teamObjHome.totalVictories + teamObjAway.totalVictories;
+    teamObj.totalDraws = teamObjHome.totalDraws + teamObjAway.totalDraws;
+    teamObj.totalLosses = teamObjHome.totalLosses + teamObjAway.totalLosses;
+    teamObj.goalsFavor = teamObjHome.goalsFavor + teamObjAway.goalsFavor;
+    teamObj.goalsOwn = teamObjHome.goalsOwn + teamObjAway.goalsOwn;
+
+    return teamObj;
+
+    return teamObj;
+  }
 }
