@@ -57,33 +57,46 @@ export default class LeadboardService {
     return a.totalPoints - b.totalPoints;
   });
 
-  //   static awayTeamCounter(team: ITeam, matchesArr: IMatch[], data: ILeader[]) {
-  //     const teamObj = LeadboardService.teamObjFunc() as ILeader;
-  //     teamObj.name = team.teamName;
-  //     matchesArr.forEach((match: IMatch) => {
-  //       if (team.id === match.awayTeamId) {
-  //         teamObj.totalGames += 1;
-  //         teamObj.goalsFavor += match.awayTeamGoals;
-  //         teamObj.goalsOwn += match.homeTeamGoals;
-  //         if (match.awayTeamGoals > match.homeTeamGoals) {
-  //           teamObj.totalVictories += 1;
-  //           teamObj.totalPoints += 3;
-  //         } else if (match.awayTeamGoals < match.homeTeamGoals) {
-  //           teamObj.totalLosses += 1;
-  //         } else {
-  //           teamObj.totalDraws += 1; teamObj.totalPoints += 1;
-  //         }
-  //       }
-  //     });
-  //     data.push(teamObj);
-  //   }
+  static awayTeamCounter(team: ITeam, matchesArr: IMatch[]) {
+    const teamObj = LeadboardService.teamObjFunc() as ILeader;
+    teamObj.name = team.teamName;
+    matchesArr.forEach((match: IMatch) => {
+      if (team.id === match.awayTeamId) {
+        teamObj.totalGames += 1;
+        teamObj.goalsFavor += match.awayTeamGoals;
+        teamObj.goalsOwn += match.homeTeamGoals;
+        teamObj.goalsBalance = teamObj.goalsFavor - teamObj.goalsOwn;
+        if (match.awayTeamGoals > match.homeTeamGoals) {
+          teamObj.totalVictories += 1; teamObj.totalPoints += 3;
+        } else if (match.awayTeamGoals < match.homeTeamGoals) {
+          teamObj.totalLosses += 1;
+        } else {
+          teamObj.totalDraws += 1; teamObj.totalPoints += 1;
+        }
+      }
+    });
+    return teamObj;
+  }
 
-  public async getTeamsPerfomance() {
+  public async getTeamsPerfomanceHome() {
     const teamsArr = await Teams.findAll();
     const matchesArr = await this.model.findAll({ where: { inProgress: false } });
     const dataArr: ILeader[] = [];
     teamsArr.forEach((team) => {
       const teamObj = LeadboardService.homeTeamCounter(team, matchesArr);
+      teamObj.efficiency = LeadboardService.teamEfficiency(teamObj.totalPoints, teamObj.totalGames);
+      dataArr.push(teamObj);
+    });
+    const data = LeadboardService.ArrSorting(dataArr);
+    return { status: 200, data };
+  }
+
+  public async getTeamsPerfomanceAway() {
+    const teamsArr = await Teams.findAll();
+    const matchesArr = await this.model.findAll({ where: { inProgress: false } });
+    const dataArr: ILeader[] = [];
+    teamsArr.forEach((team) => {
+      const teamObj = LeadboardService.awayTeamCounter(team, matchesArr);
       teamObj.efficiency = LeadboardService.teamEfficiency(teamObj.totalPoints, teamObj.totalGames);
       dataArr.push(teamObj);
     });

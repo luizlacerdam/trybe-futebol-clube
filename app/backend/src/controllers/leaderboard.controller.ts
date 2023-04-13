@@ -4,8 +4,8 @@ import LeadboardService from '../services/leaderboard.service';
 export default class LeadboardController {
   constructor(private _leaderboardService = new LeadboardService()) {}
 
-  public getTeamsPerfomance = async (req: Request, res: Response) => {
-    const { status, data } = await this._leaderboardService.getTeamsPerfomance();
+  public getTeamsPerfomanceHome = async (req: Request, res: Response) => {
+    const { status, data } = await this._leaderboardService.getTeamsPerfomanceHome();
     return res.status(status).json(data);
   };
 }
