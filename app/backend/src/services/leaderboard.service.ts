@@ -130,6 +130,7 @@ export default class LeadboardService {
     teamObj.totalLosses = teamObjHome.totalLosses + teamObjAway.totalLosses;
     teamObj.goalsFavor = teamObjHome.goalsFavor + teamObjAway.goalsFavor;
     teamObj.goalsOwn = teamObjHome.goalsOwn + teamObjAway.goalsOwn;
+    teamObj.goalsBalance = (teamObj.goalsFavor - teamObj.goalsOwn);
 
     return teamObj;
 
