@@ -8,4 +8,9 @@ export default class LeadboardController {
     const { status, data } = await this._leaderboardService.getTeamsPerfomanceHome();
     return res.status(status).json(data);
   };
+
+  public getTeamsPerfomanceAway = async (req: Request, res: Response) => {
+    const { status, data } = await this._leaderboardService.getTeamsPerfomanceAway();
+    return res.status(status).json(data);
+  };
 }
