@@ -1,4 +1,4 @@
-import { IMatch, NewMatchObj, NewMatchObjReturn } from "../../services/interfaces/matches.interfaces";
+import { IMatch, MatcheObj, NewMatchObj, NewMatchObjReturn } from "../../services/interfaces/matches.interfaces";
 
 export const matchesMock: IMatch[] = [
     {
@@ -1354,7 +1354,6 @@ export const inProgressFalseMock: IMatch[] = [
 ]
 
 export const newMatchObj: NewMatchObj = {
-
     homeTeamId: 1,
     awayTeamId: 2,
     homeTeamGoals: 1,
@@ -1368,4 +1367,10 @@ export const newMatchObjReturn: NewMatchObjReturn = {
     "homeTeamGoals": 1,
     "awayTeamGoals": 2,
     "inProgress": true
+}
+
+export const matchUpdateObj: MatcheObj = {
+    id: 1,
+    homeTeamGoals: 2,
+    awayTeamGoals: 3,
 }
