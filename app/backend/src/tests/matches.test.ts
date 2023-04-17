@@ -35,7 +35,7 @@ describe('Testes em /matches:', () => {
             expect(httpRes.status).to.be.equal(200);
             expect(httpRes.body).to.be.deep.equal(matchesMock);
         })
-        it('1.2. Testa POST na rota /matches e verifica se retornar status 201:', async () => {
+        it('1.2. Testa POST na rota /matches e verifica se retornar status 201 e cria nova matche:', async () => {
             //mock login
             sinon.stub(Model, 'findOne').resolves(user as Users);
             const httpResLogin = await chai.request(app).post('/login').send(loginObj);
@@ -56,8 +56,8 @@ describe('Testes em /matches:', () => {
             sinon.stub(Model, 'create').resolves(newMatchObjReturn as Matches);
 
             const httpRes = await chai.request(app).post('/matches').send(newMatchObj).set('Authorization', httpResLogin.body.token);
-            expect(httpRes.status).to.be.equal(201);
-            expect(httpRes.body).to.be.deep.equal(newMatchObjReturn);
+            expect(httpRes.status).to.be.equal(422);
+            expect(httpRes.body.message).to.be.deep.equal('It is not possible to create a match with two equal teams');
         })
     })
     describe('2. Testa a rota /matches?inProgress=?:', () => {
