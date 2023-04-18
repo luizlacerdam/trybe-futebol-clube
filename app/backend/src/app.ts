@@ -3,6 +3,7 @@ import teamsRouter from './routes/teams.router';
 import userRouter from './routes/login.router';
 import matchesRouter from './routes/matches.router';
 import leaderBoardRouter from './routes/leaderboard.router';
+import errorMiddleware from './middlewares/error-middleware';
 
 class App {
   public app: express.Express;
@@ -18,6 +19,7 @@ class App {
     this.app.use('/login', userRouter);
     this.app.use('/matches', matchesRouter);
     this.app.use('/leaderboard', leaderBoardRouter);
+    this.app.use(errorMiddleware);
   }
 
   private config():void {
