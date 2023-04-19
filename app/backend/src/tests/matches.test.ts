@@ -2,10 +2,10 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-
+import * as jwt from 'jsonwebtoken';
 import { app } from '../app';
 import { Model } from 'sequelize';
-import { inProgressFalseMock, inProgressTrueMock, matchUpdateObj, matchesMock, newMatchObj, newMatchObjReturn } from './mocks/matches.mock';
+import { inProgressFalseMock, inProgressTrueMock, matchUpdateObj, matchesMock, newMatchObj, newMatchObjNotFound, newMatchObjReturn, newMatchObjSameId } from './mocks/matches.mock';
 import { IMatch, NewMatchObj } from '../services/interfaces/matches.interfaces';
 import Matches from '../database/models/matches.model';
 import { tokenValidation } from '../utils/tokenRelated';
@@ -47,18 +47,35 @@ describe('Testes em /matches:', () => {
             expect(httpRes.status).to.be.equal(201);
             expect(httpRes.body).to.be.deep.equal(newMatchObjReturn);
         })
-        it('1.2. Testa POST na rota /matches e verifica se retornar status 422:', async () => {
+        it('1.3. Testa POST na rota /matches e verifica se retornar status 422 de teams com mesmo id:', async () => {
             //mock login
             sinon.stub(Model, 'findOne').resolves(user as Users);
             const httpResLogin = await chai.request(app).post('/login').send(loginObj);
 
-            // mock newMatche
-            sinon.stub(Model, 'create').resolves(newMatchObjReturn as Matches);
-
-            const httpRes = await chai.request(app).post('/matches').send(newMatchObj).set('Authorization', httpResLogin.body.token);
+            const httpRes = await chai.request(app).post('/matches').send(newMatchObjSameId).set('Authorization', httpResLogin.body.token);
             expect(httpRes.status).to.be.equal(422);
             expect(httpRes.body.message).to.be.deep.equal('It is not possible to create a match with two equal teams');
         })
+        it('1.4. Testa POST na rota /matches e verifica se retornar status 404 se um dos teams não tiver na db:', async () => {
+            //mock login
+            sinon.stub(Users, 'findOne').resolves(user as Users);
+            const httpResLogin = await chai.request(app).post('/login').send(loginObj);
+            // sinon.stub(jwt, 'verify').resolves({
+            //     "id": 1,
+            //     "username": "Admin",
+            //     "role": "admin",
+            //     "email": "admin@admin.com",
+            //     "iat": 1680969877,
+            //     "exp": 1681574677
+            // });
+
+            sinon.stub(Matches, 'findOne').resolves();
+
+            const httpRes = await chai.request(app).post('/matches').send(newMatchObjNotFound).set('Authorization', httpResLogin.body.token);
+            expect(httpRes.status).to.be.equal(404);
+            expect(httpRes.body.message).to.be.deep.equal('There is no team with such id!');
+        })
+
     })
     describe('2. Testa a rota /matches?inProgress=?:', () => {
         it('2.1. Verifica se retorna todos inProgress = true e status 200:', async () => {

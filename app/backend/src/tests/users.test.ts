@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-
+import * as jwt from 'jsonwebtoken';
 import { app } from '../app';
 
 import { Response } from 'superagent';
@@ -17,12 +17,19 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
+const user = {
+    id: 1,
+    username: 'Tryber',
+    email: "test@test.com",
+    password: "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
+};
+
 const loginObj = {
     "email": "test@test.com",
     "password": "secret_admin"
 }
 const tokenObj = {
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjgwOTY5ODc3LCJleHAiOjE2ODE1NzQ2Nzd9.hw29k1_2-TaDLU5qaXUrtfz-mfb6a7MMeuyuuQYNv_s'
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiaWF0IjoxNjgxODYzMDU1LCJleHAiOjE2ODI0Njc4NTV9.FcMqflpOFUjbOwexs4hoFV4-BZjwnxQV1692JKKODD8.hw29k1_2-TaDLU5qaXUrtfz-mfb6a7MMeuyuuQYNv_s'
 }
 
 describe('Testes em users;', () => {
@@ -64,6 +71,25 @@ describe('Testes em users;', () => {
             expect(httpRes.body.token).to.be.a('string');
 
 
+        })
+    })
+    describe('2. Testa a rota /role :', () => {
+        it('2.1. Testa se retorna o role "admin" e status 200', async () => {
+            //mock login
+            sinon.stub(Users, 'findOne').resolves(user as Users);
+            const httpResLogin = await chai.request(app).post('/login').send(loginObj);
+            sinon.stub(jwt, 'verify').returns({
+                "id": 1,
+                "username": "Admin",
+                "role": "admin",
+                "email": "admin@admin.com",
+                "iat": 1680969877,
+                "exp": 1681574677
+            } as any);
+            const httpRes = await chai.request(app).get('/login/role').set('Authorization', httpResLogin.body.token);
+            expect(httpRes.status).to.be.equal(200);
+
+            expect(httpRes.body.role).to.be.equal('admin');
         })
     })
 })

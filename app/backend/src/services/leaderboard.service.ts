@@ -133,7 +133,5 @@ export default class LeadboardService {
     teamObj.goalsBalance = (teamObj.goalsFavor - teamObj.goalsOwn);
 
     return teamObj;
-
-    return teamObj;
   }
 }

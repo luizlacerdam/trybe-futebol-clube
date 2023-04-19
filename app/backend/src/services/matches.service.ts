@@ -55,6 +55,8 @@ export default class MatchesService implements IMatchService {
     const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = matcheObj;
 
     const homeTeam = await this.model.findOne({ where: { homeTeamId } });
+    // console.log(homeTeamId);
+    // console.log(homeTeam);
 
     const awayTeam = await this.model.findOne({ where: { awayTeamId } });
 

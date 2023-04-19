@@ -1360,6 +1360,20 @@ export const newMatchObj: NewMatchObj = {
     awayTeamGoals: 2,
 }
 
+export const newMatchObjSameId: NewMatchObj = {
+    homeTeamId: 1,
+    awayTeamId: 1,
+    homeTeamGoals: 1,
+    awayTeamGoals: 2,
+}
+
+export const newMatchObjNotFound: NewMatchObj = {
+    homeTeamId: 5,
+    awayTeamId: 1,
+    homeTeamGoals: 1,
+    awayTeamGoals: 2,
+}
+
 export const newMatchObjReturn: NewMatchObjReturn = {
     "id": 49,
     "homeTeamId": 1,
