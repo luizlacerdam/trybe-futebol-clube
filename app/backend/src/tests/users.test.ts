@@ -22,7 +22,7 @@ const user = {
     username: 'Tryber',
     email: "test@test.com",
     password: "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
-};
+}; // senha: secret_admin
 
 const loginObj = {
     "email": "test@test.com",
@@ -47,11 +47,11 @@ describe('Testes em users;', () => {
             expect(httpRes.body.message).to.be.equal('Invalid email or password');
         })
         it('1.3. Deve retornar status 401 e "Invalid email or password" se o password for incorreto;', async () => {
-            sinon.stub(Model, 'findOne').resolves(loginObj as Users)
+            sinon.stub(Users, 'findOne').resolves(user as Users)
             const httpRes = await chai.request(app).post('/login').send(
                 {
                     "email": "test@test.com",
-                    "password": "teste"
+                    "password": "wrongpass"
                 });
             expect(httpRes.status).to.be.equal(401);
             expect(httpRes.body.message).to.be.equal('Invalid email or password');
@@ -69,8 +69,6 @@ describe('Testes em users;', () => {
             expect(httpRes.status).to.be.equal(200);
             expect(httpRes.body).to.be.key('token');
             expect(httpRes.body.token).to.be.a('string');
-
-
         })
     })
     describe('2. Testa a rota /role :', () => {
