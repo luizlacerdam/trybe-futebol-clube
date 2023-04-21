@@ -1,18 +1,28 @@
-import { Request, Response } from 'express';
-import TeamsService from '../services/teams.service';
-import { IUserController } from '../interfaces/teams.interfaces';
+import { NextFunction, Request, Response } from 'express';
+import { IUserController, ITeamsService } from '../interfaces/teams.interfaces';
 
 export default class TeamsController implements IUserController {
-  constructor(private _teamsSevice = new TeamsService()) {}
+  private _teamsService: ITeamsService;
+  constructor(teamsService: ITeamsService) {
+    this._teamsService = teamsService;
+  }
 
-  public getAll = async (req: Request, res: Response) => {
-    const data = await this._teamsSevice.getAll();
-    return res.status(200).json(data);
-  };
+  public async getAll(_req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const data = await this._teamsService.getAll();
+      return res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
 
-  public getById = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const data = await this._teamsSevice.getById(Number(id));
-    return res.status(201).json(data);
-  };
+  public async getById(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const { id } = req.params;
+      const data = await this._teamsService.getById(Number(id));
+      return res.status(201).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
