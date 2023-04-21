@@ -3,6 +3,7 @@ import { IUserController, ITeamsService } from '../interfaces/teams.interfaces';
 
 export default class TeamsController implements IUserController {
   private _teamsService: ITeamsService;
+
   constructor(teamsService: ITeamsService) {
     this._teamsService = teamsService;
   }
