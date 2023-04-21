@@ -1,12 +1,12 @@
 import { ModelStatic } from 'sequelize';
 import Teams from '../database/models/teams.model';
 import Matches from '../database/models/matches.model';
-import { IService } from './interfaces/service.interfaces';
+import { IService } from '../interfaces/service.interfaces';
 import {
   IMatchService,
   MatcheObj,
   NewMatchObj,
-  NewMatchObjReturn } from './interfaces/matches.interfaces';
+  NewMatchObjReturn } from '../interfaces/matches.interfaces';
 
 export default class MatchesService implements IMatchService {
   protected model: ModelStatic<Matches> = Matches;

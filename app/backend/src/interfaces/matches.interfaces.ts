@@ -1,4 +1,4 @@
-import Matches from '../../database/models/matches.model';
+import Matches from '../database/models/matches.model';
 import { IService } from './service.interfaces';
 
 export interface IMatch {

@@ -1,9 +1,9 @@
 import { ModelStatic } from 'sequelize';
 import Matches from '../database/models/matches.model';
 import Teams from '../database/models/teams.model';
-import ILeader from './interfaces/leaderboard.interfaces';
-import { ITeam } from './interfaces/teams.interfaces';
-import { IMatch } from './interfaces/matches.interfaces';
+import ILeader from '../interfaces/leaderboard.interfaces';
+import { ITeam } from '../interfaces/teams.interfaces';
+import { IMatch } from '../interfaces/matches.interfaces';
 
 export default class LeadboardService {
   protected model: ModelStatic<Matches> = Matches;

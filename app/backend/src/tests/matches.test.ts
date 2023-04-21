@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import { app } from '../app';
 import { Model } from 'sequelize';
 import { inProgressFalseMock, inProgressTrueMock, matchUpdateObj, matchesMock, newMatchObj, newMatchObjNotFound, newMatchObjReturn, newMatchObjSameId } from './mocks/matches.mock';
-import { IMatch, NewMatchObj } from '../services/interfaces/matches.interfaces';
+import { IMatch, NewMatchObj } from '../interfaces/matches.interfaces';
 import Matches from '../database/models/matches.model';
 import { tokenValidation } from '../utils/tokenRelated';
 import Users from '../database/models/users.model';

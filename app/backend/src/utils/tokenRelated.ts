@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { IUser } from '../services/interfaces/users.interfaces';
+import { IUser } from '../interfaces/users.interfaces';
 
 const tokenSecret:jwt.Secret = process.env.JWT_SECRET || 'vqvtrybe';
 

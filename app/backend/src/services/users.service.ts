@@ -2,9 +2,9 @@ import { ModelStatic } from 'sequelize';
 import * as bcryptjs from 'bcryptjs';
 // import tokenGen from '../utils/tokenGen';
 import Users from '../database/models/users.model';
-import { IUserLogin, IUsersService } from './interfaces/users.interfaces';
+import { IUserLogin, IUsersService } from '../interfaces/users.interfaces';
 import { tokenGen } from '../utils/tokenRelated';
-import { IService } from './interfaces/service.interfaces';
+import { IService } from '../interfaces/service.interfaces';
 
 export default class UsersService implements IUsersService {
   protected model: ModelStatic<Users> = Users;

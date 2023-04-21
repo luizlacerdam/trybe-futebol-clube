@@ -9,7 +9,7 @@ import { Response } from 'superagent';
 import { Model } from 'sequelize';
 import { allTeams, saoPaulo } from './mocks/teams.mock';
 import Teams from '../database/models/teams.model';
-import { ITeam } from '../services/interfaces/teams.interfaces';
+import { ITeam } from '../interfaces/teams.interfaces';
 
 chai.use(chaiHttp);
 
