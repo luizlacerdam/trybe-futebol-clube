@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import MatchesService from '../services/matches.service';
+import { IMatchService } from '../interfaces/matches.interfaces';
 
 export default class MatchesController {
-  constructor(private _matchesService = new MatchesService()) {}
+  private _matchesService: IMatchService;
+  constructor(matchesService: IMatchService) {
+    this._matchesService = matchesService;
+  }
 
   public async getMatches(
     req: Request,
