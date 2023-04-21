@@ -1,5 +1,4 @@
 import Matches from '../database/models/matches.model';
-import { IService } from './service.interfaces';
 
 export interface IMatch {
   id: number;
@@ -13,9 +12,11 @@ export interface IMatch {
 }
 
 export interface IMatchService {
-  getAll(): Promise<IService<Matches[]>>;
-  getInProgress(inProgress: boolean): Promise<IService<Matches[]>>;
-  finishMatch(id: number): Promise<IService<object>>;
+  getAll(): Promise<Matches[]>;
+  getInProgress(inProgress: boolean): Promise<Matches[]>;
+  finishMatch(id: number): Promise<void>;
+  matchUpdate(matcheObj: MatcheObj): Promise<void>;
+  newMatch(matcheObj: NewMatchObj): Promise<NewMatchObjReturn | object>
 }
 
 export interface MatcheObj {
