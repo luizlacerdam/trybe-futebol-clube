@@ -1,8 +1,6 @@
-import { IService } from './service.interfaces';
-
 export interface ITeamsService {
-  getAll(): Promise<IService<ITeam[]>>;
-  getById(id: number): Promise<IService<ITeam | string>>;
+  getAll(): Promise<ITeam[]>;
+  getById(id: number): Promise<ITeam | null>;
 }
 
 export interface ITeam {
