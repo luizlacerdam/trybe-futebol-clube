@@ -13,8 +13,9 @@ export interface IMatch {
 
 export interface IMatchService {
   getAll(): Promise<Matches[]>;
+  getById(id: number): Promise<IMatch | null>
   getInProgress(inProgress: boolean): Promise<Matches[]>;
-  finishMatch(id: number): Promise<void>;
+  finishMatch(id: number): Promise<number[]>;
   matchUpdate(matcheObj: MatcheObj): Promise<void>;
   newMatch(matcheObj: NewMatchObj): Promise<NewMatchObjReturn | object>
 }

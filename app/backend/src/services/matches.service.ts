@@ -20,6 +20,11 @@ export default class MatchesService implements IMatchService {
     return data;
   }
 
+  async getById(id: number): Promise<MatchesModel | null> {
+    const data = await this.model.findByPk(id);
+    return data;
+  }
+
   async getInProgress(inProgress: boolean): Promise<MatchesModel[]> {
     const data = await this.model.findAll({
       where: { inProgress },
@@ -31,15 +36,16 @@ export default class MatchesService implements IMatchService {
     return data;
   }
 
-  async finishMatch(id: number): Promise<void> {
+  async finishMatch(id: number): Promise<number[]> {
     const match = await this.model.findByPk(id);
     if (!match) {
       throw new Error('Match not found!');
     } else {
-      await this.model.update(
+      const data = await this.model.update(
         { inProgress: false },
         { where: { id } },
       );
+      return data;
     }
   }
 
@@ -58,20 +64,6 @@ export default class MatchesService implements IMatchService {
 
   async newMatch(matcheObj: NewMatchObj): Promise<NewMatchObjReturn | object> {
     const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = matcheObj;
-
-    const homeTeam = await this.model.findOne({ where: { homeTeamId } });
-
-    const awayTeam = await this.model.findOne({ where: { awayTeamId } });
-
-    if (matcheObj.homeTeamId === matcheObj.awayTeamId) {
-      return { status: 422,
-        data: { message: 'It is not possible to create a match with two equal teams' } };
-    }
-
-    if (!homeTeam || !awayTeam) {
-      return { status: 404, data: { message: 'There is no team with such id!' } };
-    }
-
     const data = await this.model.create({
       homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true,
     });

@@ -14,8 +14,7 @@ export default class MatchesController {
   ): Promise<Response | void> {
     try {
       const { inProgress } = req.query;
-
-      if (inProgress === undefined) {
+      if (inProgress === undefined || (inProgress !== 'true' && inProgress !== 'false')) {
         const data = await this._matchesService.getAll();
         return res.status(200).json(data);
       }
@@ -33,8 +32,11 @@ export default class MatchesController {
   ): Promise<Response | void> {
     try {
       const { id } = req.params;
-      const data = await this._matchesService.finishMatch(Number(id));
-      return res.status(200).json(data);
+      await this._matchesService.finishMatch(Number(id));
+      return res.status(200).json({ message: 'Finished' });
+      // if (data[0] === 1) {
+      // }
+      // return res.status(400).json({ message: 'Not Modified' });
     } catch (error) {
       next(error);
     }
@@ -48,10 +50,10 @@ export default class MatchesController {
     try {
       const { id } = req.params;
       const { homeTeamGoals, awayTeamGoals } = req.body;
-      const data = await this._matchesService.matchUpdate(
+      await this._matchesService.matchUpdate(
         { id: +id, homeTeamGoals, awayTeamGoals },
       );
-      return res.status(200).json(data);
+      return res.status(200).json({ message: `Matche ${id} updated.` });
     } catch (error) {
       next(error);
     }
@@ -59,9 +61,22 @@ export default class MatchesController {
 
   public async newMatch(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const NewMatchObj = req.body;
-      const data = await this._matchesService.newMatch(NewMatchObj);
-      return res.status(200).json(data);
+      const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+      if (homeTeamId === awayTeamId) {
+        return res.status(422).json({
+          message: 'It is not possible to create a match with two equal teams' });
+      }
+
+      const homeTeam = await this._matchesService.getById(homeTeamId);
+      const awayTeam = await this._matchesService.getById(awayTeamId);
+
+      if (!homeTeam || !awayTeam) {
+        return res.status(404).json({ message: 'There is no team with such id!' });
+      }
+
+      const data = await this._matchesService.newMatch({
+        homeTeamGoals, awayTeamGoals, homeTeamId, awayTeamId });
+      return res.status(201).json(data);
     } catch (error) {
       next(error);
     }

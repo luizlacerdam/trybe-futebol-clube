@@ -21,7 +21,7 @@ export default class TeamsController implements IUserController {
     try {
       const { id } = req.params;
       const data = await this._teamsService.getById(Number(id));
-      return res.status(201).json(data);
+      return res.status(200).json(data);
     } catch (error) {
       next(error);
     }
