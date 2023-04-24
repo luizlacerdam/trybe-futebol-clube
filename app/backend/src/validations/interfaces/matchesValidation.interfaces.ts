@@ -1,4 +1,4 @@
-import MatchesModel from '../../../database/models/matches.model';
+import MatchesModel from '../../database/models/matches.model';
 
 export default interface IMatchValidation {
   validateTeamsId(homeTeamId: number, awayTeamId: number): void;

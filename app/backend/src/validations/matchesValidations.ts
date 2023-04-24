@@ -1,7 +1,7 @@
-import MatchesModel from '../../database/models/matches.model';
-import InvalidFields from '../../errors/invalidFields.error';
+import MatchesModel from '../database/models/matches.model';
+import InvalidFields from '../errors/invalidFields.error';
 import IMatchValidation from './interfaces/matchesValidation.interfaces';
-import NotFound from '../../errors/notFound.error';
+import NotFound from '../errors/notFound.error';
 
 export default class MatchesValidations implements IMatchValidation {
   validateTeamsId = (homeTeamId: number, awayTeamId: number): void => {

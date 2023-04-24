@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
-import UsersService from '../services/users.service';
+import { IUsersService } from '../interfaces/users.interfaces';
 
 export default class UsersController {
-  constructor(private _usersService = new UsersService()) {}
+  private _usersService: IUsersService;
+  constructor(userService: IUsersService) {
+    this._usersService = userService;
+  }
+
   public userLogin = async (req: Request, res: Response) => {
     const loginObj = req.body;
-    const { status, data } = await this._usersService.userLogin(loginObj);
-    // if (status) return res.status(status).json({ message: data });
-    return res.status(status).json(data);
+    const data = await this._usersService.userLogin(loginObj);
+    return res.status(200).json(data);
   };
 
   public userRole = async (req: Request, res: Response) => {

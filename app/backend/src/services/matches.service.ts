@@ -6,7 +6,7 @@ import {
   MatcheObj,
   NewMatchObj,
   NewMatchObjReturn } from '../interfaces/matches.interfaces';
-import IMatchValidation from '../validations/matches/interfaces/matchesValidation.interfaces';
+import IMatchValidation from '../validations/interfaces/matchesValidation.interfaces';
 
 export default class MatchesService implements IMatchService {
   private _matchesModel: ModelStatic<MatchesModel>;

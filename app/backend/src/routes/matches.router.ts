@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import MatchesValidations from '../validations/matches/matchesValidations';
+import MatchesValidations from '../validations/matchesValidations';
 import MatchesModel from '../database/models/matches.model';
 import MatchesService from '../services/matches.service';
 import MatchesController from '../controllers/matches.controller';
