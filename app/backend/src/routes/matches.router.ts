@@ -1,10 +1,13 @@
 import { Router } from 'express';
+import MatchesValidations from '../validations/matches/matchesValidations';
+import MatchesModel from '../database/models/matches.model';
 import MatchesService from '../services/matches.service';
 import MatchesController from '../controllers/matches.controller';
 import tokenValidation from '../middlewares/tokenValidation';
 
 const router = Router();
-const matchesService = new MatchesService();
+const matchesValidations = new MatchesValidations();
+const matchesService = new MatchesService(MatchesModel, matchesValidations);
 const matchesController = new MatchesController(matchesService);
 
 router.get('/', matchesController.getMatches.bind(matchesController));
