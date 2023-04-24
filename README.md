@@ -1,4 +1,4 @@
-# Boas vindas ao projeto Recipe App!
+# Boas vindas ao projeto Trybe Futebol Club!
   Projeto em grupo durante o curso de desenvolvimento web na trybe.
   
 O TFC é um site informativo sobre partidas e classificações de futebol! soccer
