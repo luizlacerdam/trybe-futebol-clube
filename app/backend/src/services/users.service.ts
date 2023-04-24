@@ -17,7 +17,7 @@ export default class UsersService implements IUsersService {
 
   async userLogin(loginObj: IUserLogin): Promise <IService<string | object>> {
     const user = await this._usersModel.findOne({ where: { email: loginObj.email } });
-
+    this._usersValidations.validateUser(user);
     if (!user) return { status: 401, data: { message: 'Invalid email or password' } };
 
     const isPasswordRight = bcryptjs.compareSync(loginObj.password, user.password);
