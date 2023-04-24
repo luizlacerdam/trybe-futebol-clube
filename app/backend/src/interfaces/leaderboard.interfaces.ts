@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from 'express';
+
 export interface ITeamObj {
   name: string;
   totalPoints: number;
@@ -21,7 +23,14 @@ export interface ILeaderboardService {
   // awayTeamCounter(team: ITeam, matchesArr: IMatch[]): ILeader;
   getTeamsPerfomanceHome(): Promise<ILeader[]>;
   getTeamsPerfomanceAway(): Promise<ILeader[]>;
-  getTeamsPerfomanceGeral(): Promise<ILeader[]>
+  getTeamsPerfomanceGeral(): Promise<ILeader[]>;
   // geralTeamCounter(): ILeader;
 
+}
+
+export interface ILeaderboardController {
+  getTeamsPerfomanceHome(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getTeamsPerfomanceAway(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getTeamsPerfomanceGeral(req:
+  Request, res: Response, next: NextFunction): Promise<Response | void>;
 }

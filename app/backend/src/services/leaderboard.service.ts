@@ -120,7 +120,7 @@ export default class LeadboardService implements ILeaderboardService {
       dataArr.push(teamObj);
     });
     const data = LeadboardService.ArrSorting(dataArr);
-    return data;
+    return data; // 200
   }
 
   static geralTeamCounter(team: ITeam, matchesArr: IMatch[]): ILeader {
