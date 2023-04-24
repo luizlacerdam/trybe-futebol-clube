@@ -1,21 +1,22 @@
 import { ModelStatic } from 'sequelize';
 import * as bcryptjs from 'bcryptjs';
 // import tokenGen from '../utils/tokenGen';
-import Users from '../database/models/users.model';
+import UsersModel from '../database/models/users.model';
 import { IUserLogin, IUsersService } from '../interfaces/users.interfaces';
 import { tokenGen } from '../utils/tokenRelated';
 import { IService } from '../interfaces/service.interfaces';
+import IUsersValidations from '../validations/matches/interfaces/usersValidations.interfaces';
 
 export default class UsersService implements IUsersService {
-  protected model: ModelStatic<Users> = Users;
-
-  // static checkPassword(loginPassword: string, dbPassword: string): boolean {
-  //   const check = bcryptjs.compareSync(loginPassword, dbPassword);
-  //   return check;
-  // }
+  private _usersModel: ModelStatic<UsersModel>;
+  private _usersValidations: IUsersValidations;
+  constructor(usersModel: ModelStatic<UsersModel>, usersValidations: IUsersValidations) {
+    this._usersModel = usersModel;
+    this._usersValidations = usersValidations;
+  }
 
   async userLogin(loginObj: IUserLogin): Promise <IService<string | object>> {
-    const user = await this.model.findOne({ where: { email: loginObj.email } });
+    const user = await this._usersModel.findOne({ where: { email: loginObj.email } });
 
     if (!user) return { status: 401, data: { message: 'Invalid email or password' } };
 
