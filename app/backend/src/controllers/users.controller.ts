@@ -11,7 +11,7 @@ export default class UsersController {
     try {
       const loginObj = req.body;
       const data = await this._usersService.userLogin(loginObj);
-      return res.status(200).json(data);
+      return res.status(200).json({ token: data });
     } catch (error) {
       next(error);
     }

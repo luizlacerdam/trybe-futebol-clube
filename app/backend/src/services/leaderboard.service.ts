@@ -1,14 +1,20 @@
 import { ModelStatic } from 'sequelize';
-import Matches from '../database/models/matches.model';
-import Teams from '../database/models/teams.model';
-import ILeader from '../interfaces/leaderboard.interfaces';
+import MatchesModel from '../database/models/matches.model';
+import TeamsModel from '../database/models/teams.model';
+import { ILeader, ILeaderboardService, ITeamObj } from '../interfaces/leaderboard.interfaces';
 import { ITeam } from '../interfaces/teams.interfaces';
 import { IMatch } from '../interfaces/matches.interfaces';
 
-export default class LeadboardService {
-  protected model: ModelStatic<Matches> = Matches;
+export default class LeadboardService implements ILeaderboardService {
+  private _matchesModel: ModelStatic<MatchesModel>;
+  private _teamsModel: ModelStatic<TeamsModel>;
 
-  static teamObjFunc() {
+  constructor(matchesModel: ModelStatic<MatchesModel>, teamsModel: ModelStatic<TeamsModel>) {
+    this._matchesModel = matchesModel;
+    this._teamsModel = teamsModel;
+  }
+
+  static teamObjFunc(): ITeamObj {
     const teamObj = {
       name: '',
       totalPoints: 0,
@@ -22,7 +28,7 @@ export default class LeadboardService {
     return teamObj;
   }
 
-  static homeTeamCounter(team: ITeam, matchesArr: IMatch[]) {
+  static homeTeamCounter(team: ITeam, matchesArr: IMatch[]): ILeader {
     const teamObj = LeadboardService.teamObjFunc() as ILeader;
     teamObj.name = team.teamName;
     matchesArr.forEach((match: IMatch) => {
@@ -43,12 +49,12 @@ export default class LeadboardService {
     return teamObj;
   }
 
-  static teamEfficiency(points: number, matches: number) {
+  static teamEfficiency(points: number, matches: number):string {
     const efficiency = ((points / (matches * 3)) * 100);
     return `${efficiency.toFixed(2)}`;
   }
 
-  static ArrSorting = (arr: ILeader[]) => arr.sort((b, a) => {
+  static ArrSorting = (arr: ILeader[]): ILeader[] => arr.sort((b, a) => {
     if (a.totalPoints === b.totalPoints) {
       if (a.goalsBalance === b.goalsBalance) {
         return a.goalsFavor - b.goalsFavor;
@@ -57,7 +63,7 @@ export default class LeadboardService {
     return a.totalPoints - b.totalPoints;
   });
 
-  static awayTeamCounter(team: ITeam, matchesArr: IMatch[]) {
+  static awayTeamCounter(team: ITeam, matchesArr: IMatch[]): ILeader {
     const teamObj = LeadboardService.teamObjFunc() as ILeader;
     teamObj.name = team.teamName;
     matchesArr.forEach((match: IMatch) => {
@@ -78,9 +84,9 @@ export default class LeadboardService {
     return teamObj;
   }
 
-  public async getTeamsPerfomanceHome() {
-    const teamsArr = await Teams.findAll();
-    const matchesArr = await this.model.findAll({ where: { inProgress: false } });
+  public async getTeamsPerfomanceHome(): Promise<ILeader[]> {
+    const teamsArr = await this._teamsModel.findAll();
+    const matchesArr = await this._matchesModel.findAll({ where: { inProgress: false } });
     const dataArr: ILeader[] = [];
     teamsArr.forEach((team) => {
       const teamObj = LeadboardService.homeTeamCounter(team, matchesArr);
@@ -88,12 +94,12 @@ export default class LeadboardService {
       dataArr.push(teamObj);
     });
     const data = LeadboardService.ArrSorting(dataArr);
-    return { status: 200, data };
+    return data; // 200
   }
 
-  public async getTeamsPerfomanceAway() {
-    const teamsArr = await Teams.findAll();
-    const matchesArr = await this.model.findAll({ where: { inProgress: false } });
+  public async getTeamsPerfomanceAway(): Promise<ILeader[]> {
+    const teamsArr = await this._teamsModel.findAll();
+    const matchesArr = await this._matchesModel.findAll({ where: { inProgress: false } });
     const dataArr: ILeader[] = [];
     teamsArr.forEach((team) => {
       const teamObj = LeadboardService.awayTeamCounter(team, matchesArr);
@@ -101,12 +107,12 @@ export default class LeadboardService {
       dataArr.push(teamObj);
     });
     const data = LeadboardService.ArrSorting(dataArr);
-    return { status: 200, data };
+    return data; // 200
   }
 
-  public async getTeamsPerfomanceGeral() {
-    const teamsArr = await Teams.findAll();
-    const matchesArr = await this.model.findAll({ where: { inProgress: false } });
+  public async getTeamsPerfomanceGeral(): Promise<ILeader[]> {
+    const teamsArr = await this._teamsModel.findAll();
+    const matchesArr = await this._matchesModel.findAll({ where: { inProgress: false } });
     const dataArr: ILeader[] = [];
     teamsArr.forEach((team) => {
       const teamObj = LeadboardService.geralTeamCounter(team, matchesArr);
@@ -114,10 +120,10 @@ export default class LeadboardService {
       dataArr.push(teamObj);
     });
     const data = LeadboardService.ArrSorting(dataArr);
-    return { status: 200, data };
+    return data;
   }
 
-  static geralTeamCounter(team: ITeam, matchesArr: IMatch[]) {
+  static geralTeamCounter(team: ITeam, matchesArr: IMatch[]): ILeader {
     const teamObjHome = LeadboardService.homeTeamCounter(team, matchesArr);
     const teamObjAway = LeadboardService.awayTeamCounter(team, matchesArr);
     const teamObj = LeadboardService.teamObjFunc() as ILeader;
