@@ -9,7 +9,6 @@ import { Response } from 'superagent';
 import { Model } from 'sequelize';
 import { allTeams, saoPaulo } from './mocks/teams.mock';
 import Teams from '../database/models/teams.model';
-import { ITeam } from '../interfaces/teams.interfaces';
 
 chai.use(chaiHttp);
 
@@ -36,7 +35,7 @@ describe('Testa com a rota /teams;', () => {
       sinon.stub(Model, 'findByPk').resolves(null)
       const httpRes = await chai.request(app).get('/teams/16');
       expect(httpRes.status).to.be.equal(404);
-      expect(httpRes.body).to.be.deep.equal('Not found.');
+      expect(httpRes.body.message).to.be.deep.equal('Team not found.');
     });
   })
 });

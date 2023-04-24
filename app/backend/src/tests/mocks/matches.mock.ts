@@ -1,4 +1,4 @@
-import { IMatch, MatcheObj, NewMatchObj, NewMatchObjReturn } from "../../services/interfaces/matches.interfaces";
+import { IMatch, MatcheObj, NewMatchObj, NewMatchObjReturn } from "../../interfaces/matches.interfaces";
 
 export const matchesMock: IMatch[] = [
     {

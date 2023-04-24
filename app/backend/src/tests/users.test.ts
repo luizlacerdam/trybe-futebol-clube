@@ -8,7 +8,7 @@ import { app } from '../app';
 import { Response } from 'superagent';
 import { Model } from 'sequelize';
 import Users from '../database/models/users.model';
-import UsersService from '../services/users.service';
+
 import * as bcryptjs from 'bcryptjs';
 import { tokenGen } from '../utils/tokenRelated';
 
