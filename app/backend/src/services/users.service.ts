@@ -1,6 +1,6 @@
 import { ModelStatic } from 'sequelize';
 import * as bcryptjs from 'bcryptjs';
-// import tokenGen from '../utils/tokenGen';
+import Unauthortized from '../errors/unauthorized.error';
 import UsersModel from '../database/models/users.model';
 import { IUserLogin, IUsersService } from '../interfaces/users.interfaces';
 import { tokenGen } from '../utils/tokenRelated';
@@ -16,11 +16,11 @@ export default class UsersService implements IUsersService {
 
   async userLogin(loginObj: IUserLogin): Promise <string | object> {
     const user = await this._usersModel.findOne({ where: { email: loginObj.email } });
-    this._usersValidations.validateUser(user);
-
+    if (!user) {
+      throw new Unauthortized('Invalid email or password');
+    }
     const isPasswordRight = bcryptjs.compareSync(loginObj.password, user.password);
-
-    if (!isPasswordRight) return { status: 401, data: { message: 'Invalid email or password' } };
+    this._usersValidations.validatePassword(isPasswordRight);
     // delete user.password;
     const { id, email, role, username } = user;
     const token = tokenGen({ id, email, role, username });
