@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import validateRequiredFields from '../middlewares/validateRequiredFields';
 import UsersValidations from '../validations/usersValidations';
 import { loginValidation,
   emailValidation,
@@ -15,6 +16,7 @@ const usersController = new UsersController(usersService);
 
 router.post(
   '/',
+  validateRequiredFields('user'),
   loginValidation,
   emailValidation,
   passwordValidation,

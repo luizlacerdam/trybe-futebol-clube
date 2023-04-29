@@ -34,9 +34,6 @@ export default class MatchesController {
       const { id } = req.params;
       await this._matchesService.finishMatch(Number(id));
       return res.status(200).json({ message: 'Finished' });
-      // if (data[0] === 1) {
-      // }
-      // return res.status(400).json({ message: 'Not Modified' });
     } catch (error) {
       next(error);
     }
